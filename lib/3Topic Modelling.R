@@ -2,7 +2,8 @@ rm(list = ls())
 setwd("/Users/kaishengwang/Desktop/Applied\ Data\ Science\ Project\ 4")
 load("lyr.RData")
 dim(lyr)
-lyr <- lyr[,-c(1,2,3,6:30)]
+#lyr <- lyr[,-c(1,2,3,6:30)]
+lyr <- lyr[,-1]
 dim(lyr)
 View(lyr)
 library(NLP)
@@ -18,7 +19,7 @@ get.terms <- function(x){
 vocab <- names(lyr)
 documents <- list()
 for (i in 1:2350){
-  index <- c(1:4973)
+  index <- c(1:5000)
   index <- index[!lyr[i,] == 0]
   name_var <- vocab[index]
   count <- lyr[i,][index]
@@ -44,10 +45,10 @@ set.seed(624)
 t1 <- Sys.time()
 fit <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, num.iterations = G, alpha = alpha, eta = eta, initial = NULL, burnin = 0, compute.log.likelihood = TRUE)
 fit[1]$assignments[1]
-as.numeric(names(which.max(table(fit[1]$assignments[1]))))
+as.numeric(names(which.max(table(fit[1]$assignments[4999]))))
 
 outcome_label <- vector()
-for (i in 1:4973){
+for (i in 1:2350){
   outcome_label[i] <- as.numeric(names(which.max(table(fit[1]$assignments[i]))))
 }
 

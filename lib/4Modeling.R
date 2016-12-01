@@ -2,10 +2,10 @@ rm(list = ls())
 setwd("/Users/kaishengwang/Desktop/Applied\ Data\ Science\ Project\ 4")
 load("input_data.RData")
 load("outcome_label.RData")
-install.packages("drat", repos="https://cran.rstudio.com")
+#install.packages("drat", repos="https://cran.rstudio.com")
 drat:::addRepo("dmlc")
-install.packages("xgboost", repos="http://dmlc.ml/drat/", type = "source")
-require(xgboost)
+#install.packages("xgboost", repos="http://dmlc.ml/drat/", type = "source")
+#require(xgboost)
 library(xgboost)
 X <- Input_Data
 X[,1] <- as.numeric(X[,1])
@@ -119,13 +119,14 @@ load("outcome_label.RData")
 outcome_label <- as.matrix(outcome_label)
 load("lyr.RData")
 dim(lyr)
-lyr <- lyr[,-c(1,2,3,6:30)]
+#lyr <- lyr[,-c(1,2,3,6:30)]
+lyr <- lyr[,-1]
 dim(lyr)
 dim(outcome_label)
 words_ranking <- cbind(outcome_label, lyr)
 word_names <- colnames(lyr)
 cluster <- list()
-ranking <- array(0, c(20,4973), dimnames = list(NULL, word_names))
+ranking <- array(0, c(20,5000), dimnames = list(NULL, word_names))
 for (i in 1:20){
   cluster[[i]] <- words_ranking[words_ranking[,1] == i,]
   ranking[i, ] <- colMeans(cluster[[i]][,-1])
@@ -134,4 +135,5 @@ ranking <- round(ranking)
 dim(ranking)
 ranking <- ranking[-20, ]
 dim(ranking)
+setwd("/Users/kaishengwang/Downloads/TestSongFile100/submit/")
 save(ranking, file = "ranking.RData")
